@@ -50,3 +50,11 @@ Current Location: library in Oak Hill College
 Here is their conversation. 
 
 Maria Lopez: "
+
+---
+Output the response to the prompt above in json. The output should be a list of list where the inner lists are in the form of ["<Name>", "<Utterance>"]. Output multiple utterances in the conversation until the conversation comes to a natural conclusion.
+Example output json:
+{"output": "[["Jane Doe", "Hi!"], ["John Doe", "Hello there!"] ... ]"}
+"""
+
+print(ChatGPT_request(prompt))

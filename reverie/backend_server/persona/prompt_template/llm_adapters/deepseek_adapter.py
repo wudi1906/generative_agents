@@ -25,6 +25,8 @@ class DeepseekAdapter:
         try:
             # 使用 ollama 命令行工具
             cmd = f'ollama run {self.model} "{prompt}"'
+            print(f"Executing command: {cmd}")  # 添加日志
+            
             result = subprocess.run(
                 cmd, 
                 shell=True, 
@@ -36,6 +38,7 @@ class DeepseekAdapter:
                 print(f"Error from Ollama: {result.stderr}")
                 return "Deepseek ERROR"
                 
+            print(f"Raw response: {result.stdout}")  # 添加日志
             response = result.stdout.strip()
             
             # 如果响应是 JSON 格式，尝试解析它
