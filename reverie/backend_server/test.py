@@ -2,39 +2,34 @@
 Author: Joon Sung Park (joonspk@stanford.edu)
 
 File: gpt_structure.py
-Description: Wrapper functions for calling OpenAI APIs.
+Description: Wrapper functions for calling local Deepseek model.
 """
 import json
-import random
-import openai
 import time 
 
 from utils import *
-openai.api_key = openai_api_key
+from persona.prompt_template.llm_adapters.deepseek_adapter import DeepseekAdapter
 
 def ChatGPT_request(prompt): 
-  """
-  Given a prompt and a dictionary of GPT parameters, make a request to OpenAI
-  server and returns the response. 
-  ARGS:
-    prompt: a str prompt
-    gpt_parameter: a python dictionary with the keys indicating the names of  
-                   the parameter and the values indicating the parameter 
-                   values.   
-  RETURNS: 
-    a str of GPT-3's response. 
-  """
-  # temp_sleep()
-  try: 
-    completion = openai.ChatCompletion.create(
-    model="gpt-3.5-turbo", 
-    messages=[{"role": "user", "content": prompt}]
-    )
-    return completion["choices"][0]["message"]["content"]
-  
-  except: 
-    print ("ChatGPT ERROR")
-    return "ChatGPT ERROR"
+    """
+    Given a prompt and returns the response from local Deepseek model.
+    ARGS:
+        prompt: a str prompt
+    RETURNS: 
+        a str of Deepseek's response. 
+    """
+    try: 
+        llm = DeepseekAdapter()
+        # 对于这个特定用例，我们不需要系统提示，直接使用用户提示
+        messages = [
+            {"role": "user", "content": prompt}
+        ]
+        result = llm.chat_completion(messages)
+        return result
+    
+    except Exception as e: 
+        print(f"Deepseek ERROR: {e}")
+        return "Deepseek ERROR"
 
 prompt = """
 ---
@@ -55,22 +50,3 @@ Current Location: library in Oak Hill College
 Here is their conversation. 
 
 Maria Lopez: "
----
-Output the response to the prompt above in json. The output should be a list of list where the inner lists are in the form of ["<Name>", "<Utterance>"]. Output multiple utterances in ther conversation until the conversation comes to a natural conclusion.
-Example output json:
-{"output": "[["Jane Doe", "Hi!"], ["John Doe", "Hello there!"] ... ]"}
-"""
-
-print (ChatGPT_request(prompt))
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,0 +1,25 @@
+import os
+import json
+import datetime
+import numpy as np
+
+def load_json_file(filepath):
+    with open(filepath, 'r') as f:
+        return json.load(f)
+
+def save_json_file(data, filepath):
+    with open(filepath, 'w') as f:
+        json.dump(data, f, indent=2)
+
+def get_current_time():
+    return datetime.datetime.now()
+
+def ensure_directory_exists(directory):
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+def format_timestamp(dt):
+    return dt.strftime("%Y-%m-%d %H:%M:%S")
+
+def get_local_time():
+    return datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
